@@ -88,6 +88,19 @@ app.delete("/movies", function (req, res) {
     .catch((err) => res.status(500).json(err));
 });
 
+app.delete("/movies/:id", function (req, res) {
+  let {id} = req.params;
+  knex("movies")
+    .where({ id: id })
+    .del()
+    .then(
+      res.status(200).send({
+        message: `Movie deleted out of movie list`,
+      })
+    )
+    .catch((err) => res.status(500).json(err));
+});
+
 app.all('*', (req, res) => {
     res.status(400).json("Endpoint does not exist");
 });

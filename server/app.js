@@ -101,6 +101,43 @@ app.delete("/movies/:id", function (req, res) {
     .catch((err) => res.status(500).json(err));
 });
 
+app.get("/watched", function (req, res) {
+  knex
+    .select("*")
+    .from("movies")
+    .where({watched: true})
+    .orderBy("id", "asc")
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(500).json(err));
+});
+
+app.patch("/movies/:id", function (req, res) {
+  let {id} = req.params
+  knex("movies")
+    .where({ id: id })
+    .update({
+      watched: true,
+    })
+    .then(
+      res
+        .status(200)
+        .send({
+          message: `Movie ${req.body.id} change to watched`,
+        })
+    )
+    .catch((err) => res.status(500).json(err));
+});
+
+app.get("/unwatched", function (req, res) {
+  knex
+    .select("*")
+    .from("movies")
+    .where({ watched: false })
+    .orderBy("id", "asc")
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(500).json(err));
+});
+
 app.all('*', (req, res) => {
     res.status(400).json("Endpoint does not exist");
 });

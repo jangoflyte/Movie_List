@@ -33,7 +33,12 @@ export const Navbar = () => {
         .catch(err => console.log(err));
     };
 
-    console.log(favorites);
+    // console.log(favorites);
+
+    const handleFavorite = (e) => {
+    e.preventDefault();
+    navigate("/added");
+    };
 
     const handleWatched = (e) => {
       e.preventDefault();
@@ -67,12 +72,15 @@ export const Navbar = () => {
             value={addMovie}
             onChange={(e) => setAddMovie(e.target.value)}
           />
-          <button onClick={handleAdd}>Favorites</button>
+          <button onClick={handleAdd}>Add</button>
+          <button style={{ marginLeft: "1%" }} onClick={handleFavorite}>
+            Favorites
+          </button>
           <button style={{ marginLeft: "20%" }} onClick={handleWatched}>
-            Watched
+            Watched List
           </button>
           <button style={{ marginLeft: "5%" }} onClick={handleToWatch}>
-            To Watch
+            Watch List
           </button>
         </form>
       </div>

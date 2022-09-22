@@ -14,7 +14,7 @@ export function App() {
   const [input, setInput] = useState("");
   const [watched, setWatched] = useState(false)
 
-  // console.log("watch state", watched);
+  console.log("watch state", watched);
   // const movies = [
   //   { title: "Mean Girls" },
   //   { title: "Hackers" },
@@ -32,16 +32,30 @@ export function App() {
     })
   }, []);
 
-    const handleDelete = () => {
-      fetch(`http://localhost:8080/movies/`, {
-        method: "DELETE",
-        headers: {
-          'Content-Type':'application/json',
-        }
-      })
-        .then((response) => response.json())
-        .catch((err) => console.log(err));
-    };
+  const handleDelete = () => {
+    fetch(`http://localhost:8080/movies/`, {
+      method: "DELETE",
+      headers: {
+        'Content-Type':'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .catch((err) => console.log(err));
+  };
+
+  const handleWatched = (id) => {
+    fetch(`http://localhost:8080/watched/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        watched: true,
+      }),
+    })
+      .then((response) => response.json())
+      .catch((err) => console.log(err));
+  };
 
   const movieObj = {
     movieList,
@@ -65,7 +79,7 @@ export function App() {
                   {movie.title}
                   <button
                     style={{ marginLeft: "10%" }}
-                    onClick={() => setWatched(true)}
+                    onClick={() => handleWatched}
                   >
                     Watched
                   </button>

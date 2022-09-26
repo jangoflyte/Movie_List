@@ -1,7 +1,13 @@
 import React, {useContext, useState} from 'react';
 import {MovieContext} from '../App';
 import { useNavigate } from "react-router-dom";
+import styled from 'styled-components'
+import '../App.css';
 
+const Banner = styled.h1`
+  text-align: center;
+  text-decoration: none;
+`;
 
 export const Navbar = () => {
     const {input, setInput} = useContext(MovieContext)
@@ -52,9 +58,9 @@ export const Navbar = () => {
     
     return (
       <div>
-        <h1 style={{ textAlign: "center", textDecoration: "none" }}>
+        <Banner>
           <a href="/">Movie List</a>
-        </h1>
+        </Banner>
         <form>
           <input
             type="input"

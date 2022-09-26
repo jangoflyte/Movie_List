@@ -1,7 +1,7 @@
 version: "3.1"
 services:
   frontend:
-    build: ./ui
+    build: ./client
     container_name: frontend
     ports:
       - "3000:3000"
@@ -20,12 +20,12 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: docker
-      POSTGRES_DB: authordb
+      POSTGRES_DB: movie_list
 #     networks:
 #       - my_network
       
   backend:
-    build: ./api
+    build: ./server
     # container_name: backend
     ports:
       - "8080:8080"

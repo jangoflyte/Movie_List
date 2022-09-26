@@ -6,7 +6,8 @@
 module.exports = {
   development: {
     client: "pg",
-    connection: 'postgres://postgres:docker@localhost/movie_list'
+    // connection: 'postgres://postgres:docker@localhost/movie_list'
+    connection: process.env.DB_CONNECTION_STRING,
   },
 
   staging: {

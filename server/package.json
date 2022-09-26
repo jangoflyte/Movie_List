@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "npx knex migrate:latest && npx knex seed:run && nodemon server.js"
   },
   "keywords": [],
   "author": "",

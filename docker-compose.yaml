@@ -1,0 +1,42 @@
+version: "3.1"
+services:
+  frontend:
+    build: ./ui
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  #   networks:
+  #     - my_network
+
+  db:
+    image: postgres:latest
+    # volumes:
+    #   - $HOME/docker/volumes/postgres:/var/lib/postgresql/data
+    # container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: authordb
+#     networks:
+#       - my_network
+      
+  backend:
+    build: ./api
+    # container_name: backend
+    ports:
+      - "8080:8080"
+    # networks:
+    #   - my_network
+    environment:
+      DB_CONNECTION_STRING: postgres://postgres:docker@db:5432/movie_list
+    depends_on:
+      - db
+      
+
+# networks:
+#   my_network:
+#     driver: bridge  

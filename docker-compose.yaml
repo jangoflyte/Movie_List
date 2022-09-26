@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3"
 services:
   frontend:
     build: ./client
@@ -14,7 +14,7 @@ services:
     image: postgres:latest
     # volumes:
     #   - $HOME/docker/volumes/postgres:/var/lib/postgresql/data
-    # container_name: db
+    container_name: db
     ports:
       - "5432:5432"
     environment:
@@ -26,7 +26,7 @@ services:
       
   backend:
     build: ./server
-    # container_name: backend
+    container_name: backend
     ports:
       - "8080:8080"
     # networks:

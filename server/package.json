@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx knex migrate:latest && npx knex seed:run && nodemon server.js"
+    "start:dev": "npm run start:knex && nodemon server.js",
+    "start:knex": "npx knex migrate:rollback && npx knex migrate:latest && npx knex seed:run",
+    "start": "npm run start:knex && nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -15,5 +18,8 @@
     "knex": "^2.3.0",
     "pg": "^8.8.0",
     "react-router-dom": "^6.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }

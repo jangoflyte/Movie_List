@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import { Navbar } from './components/Navbar';
 import { Routes, Route } from "react-router-dom";
 import { Results } from './components/Results';
-import { Added_Movies } from './components/Added_Movies';
+import { AddedMovies } from './components/Added_Movies';
 import { Watched } from './components/Watched';
-import { To_Watch } from './components/To_Watch';
+import { ToWatch } from './components/To_Watch';
 
 export const MovieContext = React.createContext();
 
@@ -12,9 +12,9 @@ export function App() {
   const [movieList, setMovieList] = useState([])
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
-  const [watched, setWatched] = useState(false)
+  //const [watched, setWatched] = useState(false)
 
-  console.log("watch state", watched);
+  //console.log("watch state", watched);
   // const movies = [
   //   { title: "Mean Girls" },
   //   { title: "Hackers" },
@@ -23,7 +23,7 @@ export function App() {
   //   { title: "Ex Machina" },
   // ];
 
-  useEffect(() =>{
+  useEffect(() => {
     fetch(`http://localhost:8080/movies`)
     .then(res => res.json())
     .then(data => {
@@ -36,6 +36,7 @@ export function App() {
     fetch(`http://localhost:8080/movies/${id}`, {
       method: "DELETE",
     })
+      .then(alert("Movie deleted"))
       .then((response) => response.json())
       .catch((err) => console.log(err));
   };
@@ -47,9 +48,10 @@ export function App() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        watched: true,
+        watched: !id.watched,
       }),
     })
+      .then(alert("Movie changed to watched"))
       .then((response) => response.json())
       .catch((err) => console.log(err));
   };
@@ -76,11 +78,11 @@ export function App() {
                   {movie.title}
                   <button
                     style={{ marginLeft: "10%" }}
-                    onClick={() => handleWatched}
+                    onClick={() => handleWatched(movie.id)}
                   >
                     Watched
                   </button>
-                  <button style={{ marginLeft: "10%" }} onClick={handleDelete}>
+                  <button style={{ marginLeft: "10%" }} onClick={() => handleDelete(movie.id)}>
                     Delete
                   </button>
                 </li>
@@ -89,9 +91,9 @@ export function App() {
           }
         ></Route>
         <Route path="/results" element={<Results />}></Route>
-        <Route path="/added" element={<Added_Movies />}></Route>
+        <Route path="/added" element={<AddedMovies />}></Route>
         <Route path="/watched" element={<Watched />}></Route>
-        <Route path="/towatch" element={<To_Watch />}></Route>
+        <Route path="/towatch" element={<ToWatch />}></Route>
       </Routes>
     </MovieContext.Provider>
   );

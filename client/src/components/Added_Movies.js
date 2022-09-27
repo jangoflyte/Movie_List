@@ -1,13 +1,6 @@
 import React from 'react';
 
-export const Added_Movies = () => {
-    const handleDelete = (id) => {
-      fetch(`http://localhost:8080/movies/${id}`, {
-        method: "DELETE",
-      })
-        .then((response) => response.json())
-        .catch((err) => console.log(err));
-    };
+export const AddedMovies = () => {
 
     return (
         <div>

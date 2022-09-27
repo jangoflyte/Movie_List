@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export const To_Watch = () => {
+export const ToWatch = () => {
     const [watchList, setWatchList] = useState([]);
 
     useEffect(() => {

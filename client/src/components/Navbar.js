@@ -10,9 +10,8 @@ const Banner = styled.h1`
 `;
 
 export const Navbar = () => {
-  const {input, setInput} = useContext(MovieContext)
+  const {input, setInput, favorites, setFavorites} = useContext(MovieContext)
   const [addMovie, setAddMovie] = useState("");
-  const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
   
   const handleChange = (e) => {
@@ -35,6 +34,7 @@ export const Navbar = () => {
         },
     })
     .then(response => response.json())
+    .then(() => handleFavoriteList())
     .catch(err => console.log(err));
   };
 
@@ -42,7 +42,7 @@ export const Navbar = () => {
     setFavorites(addMovie);
   };
 
-  console.log(favorites);
+  //console.log(favorites);
 
   const handleFavorite = (e) => {
     e.preventDefault();

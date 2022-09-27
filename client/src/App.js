@@ -13,6 +13,7 @@ export function App() {
   const [movieList, setMovieList] = useState([])
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
+  const [favorites, setFavorites] = useState([]);
   //const [watched, setWatched] = useState(false)
 
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ export function App() {
     .then(data => {
       setMovieList(data);
       setResults(data);
+      // setFavorites(data); 
     })
   }, []);
 
@@ -45,11 +47,11 @@ export function App() {
       .catch((err) => console.log(err));
   };
 
-  const handleWatched = (movie) => {
-    fetch(`http://localhost:8080/watched/${movie.id}`, {
+  const handleWatched = (id) => {
+    fetch(`http://localhost:8080/movies/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
-        watched: !movie.watched,
+        watched: !id.watched,
       }),
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -66,7 +68,9 @@ export function App() {
     input,
     setInput,
     results,
-    setResults
+    setResults,
+    favorites,
+    setFavorites,
   };
 
   return (
@@ -77,6 +81,7 @@ export function App() {
           path="/"
           element={
             <ul>
+              <h1>List of Movies:</h1>
               {movieList.map((movie) => (
                 <li key={movie.id}>
                   {movie.title}
@@ -86,7 +91,10 @@ export function App() {
                   >
                     Watched
                   </button>
-                  <button style={{ marginLeft: "10%" }} onClick={() => handleDelete(movie.id)}>
+                  <button
+                    style={{ marginLeft: "10%" }}
+                    onClick={() => handleDelete(movie.id)}
+                  >
                     Delete
                   </button>
                 </li>

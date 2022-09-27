@@ -24,10 +24,6 @@ export const Navbar = () => {
     navigate("/results")
   };
 
-  const handleFavoriteList = () => {
-    setFavorites(addMovie);
-  }
-
   const handleAdd = () => {
     fetch(`http://localhost:8080/movies`, {
         method: "POST",
@@ -39,8 +35,11 @@ export const Navbar = () => {
         },
     })
     .then(response => response.json())
-    .then(data => console.log(data))
     .catch(err => console.log(err));
+  };
+
+  const handleFavoriteList = () => {
+    setFavorites(addMovie);
   };
 
   console.log(favorites);

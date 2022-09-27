@@ -45,11 +45,11 @@ export function App() {
       .catch((err) => console.log(err));
   };
 
-  const handleWatched = (id) => {
-    fetch(`http://localhost:8080/watched/${id}`, {
+  const handleWatched = (movie) => {
+    fetch(`http://localhost:8080/watched/${movie.id}`, {
       method: "PATCH",
       body: JSON.stringify({
-        watched: !id.watched,
+        watched: !movie.watched,
       }),
       headers: {
         "Content-Type": "application/json; charset=utf-8",

@@ -1,10 +1,12 @@
 const express =  require('express');
+const cors = require("cors");
+const morgan = require('morgan');
 const app = express();
 const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV||'development']);
-const cors = require('cors');
-const { application } = require('express');
+
 app.use(express.json());
 app.use(cors());
+app.use(morgan('tiny'));
 
 // const movies = [
 //   { title: "Mean Girls" },

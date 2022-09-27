@@ -2,11 +2,24 @@ const express =  require('express');
 const cors = require("cors");
 const morgan = require('morgan');
 const app = express();
-const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV||'development']);
+//const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV||'development']);
 
 app.use(express.json());
 app.use(cors());
 app.use(morgan('tiny'));
+
+const {
+  getMovies,
+  getMovieByID,
+  createMovie,
+  updateMovie,
+  changeMovie,
+  getWatched,
+  getUnwatched,
+  changeToWatched,
+  deleteMovie,
+  deleteMovieByID
+} = require("./controllers/controller");
 
 // const movies = [
 //   { title: "Mean Girls" },
@@ -22,12 +35,9 @@ app.get('/', function(req, res) {
 
 app.get("/movies", function (req, res) {
 //   res.status(200).json(movies);
-    knex
-        .select('*')
-        .from("movies")
-        .orderBy("id", "asc")
-        .then(data => res.status(200).json(data))
-        .catch(err => res.status(500).json(err));
+  getMovies()
+    .then(data => res.status(200).json(data))
+    .catch(err => res.status(500).json(err));
 });
 
 app.get("/movies/:id", function (req, res) {
@@ -35,39 +45,29 @@ app.get("/movies/:id", function (req, res) {
   if (req.body === null ) {
     res.status(200).send("Movie does not exist");
   } else {
-    knex
-        .select("*")
-        .from("movies")
-        .where({ "movies.id": id })
-        .orderBy("id", "asc")
-        .then((data) => res.status(200).json(data))
-        .catch((err) => res.status(500).json(err));
+    getMovieByID(id)
+      .then((data) => res.status(200).json(data))
+      .catch((err) => res.status(500).json(err));
   }
 });
 
 app.post("/movies", function (req, res) {
-  knex("movies")
-    .insert(req.body)
+  let movie = req.body;
+  createMovie(movie)
     .then(res.status(202).send({message: `${req.body.title} added successfully`}))
     .catch((err) => res.status(500).json(err));
 });
 
 app.patch("/movies", function (req, res) {
-  knex("movies")
-    .where({id: req.body.id})
-    .update({
-        title: req.body.title,
-    })
+  let movie = req.body;
+  updateMovie(movie)
     .then(res.status(200).send({ message: `Movie ID ${req.body.id} change to ${req.body.title}`}))
     .catch((err) => res.status(500).json(err));
 });
 
 app.put("/movies", function (req, res) {
-  knex("movies")
-    .where({ id: req.body.id })
-    .update({
-      title: req.body.title,
-    })
+  let movie = req.body;
+  changeMovie(movie)
     .then(
       res
         .status(200)
@@ -79,9 +79,8 @@ app.put("/movies", function (req, res) {
 });
 
 app.delete("/movies", function (req, res) {
-  knex("movies")
-    .where({ id: req.body.id })
-    .del()
+  let movie = req.body;
+  deleteMovie(movie)
     .then(
       res.status(200).send({
         message: `Movie ID ${req.body.id} deleted out of movie list`,
@@ -92,9 +91,7 @@ app.delete("/movies", function (req, res) {
 
 app.delete("/movies/:id", function (req, res) {
   let {id} = req.params;
-  knex("movies")
-    .where({ id: id })
-    .del()
+  deleteMovieByID(id)
     .then(
       res.status(200).send({
         message: `Movie deleted out of movie list`,
@@ -104,22 +101,14 @@ app.delete("/movies/:id", function (req, res) {
 });
 
 app.get("/watched", function (req, res) {
-  knex
-    .select("*")
-    .from("movies")
-    .where({watched: true})
-    .orderBy("id", "asc")
+  getWatched()
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(500).json(err));
 });
 
 app.patch("/movies/:id", function (req, res) {
   let {id} = req.params
-  knex("movies")
-    .where({ id: id })
-    .update({
-      watched: true,
-    })
+  changeToWatched(id)
     .then(
       res
         .status(200)
@@ -131,11 +120,7 @@ app.patch("/movies/:id", function (req, res) {
 });
 
 app.get("/unwatched", function (req, res) {
-  knex
-    .select("*")
-    .from("movies")
-    .where({ watched: false })
-    .orderBy("id", "asc")
+  getUnwatched()
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(500).json(err));
 });

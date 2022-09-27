@@ -32,12 +32,9 @@ export function App() {
     })
   }, []);
 
-  const handleDelete = () => {
-    fetch(`http://localhost:8080/movies/`, {
+  const handleDelete = (id) => {
+    fetch(`http://localhost:8080/movies/${id}`, {
       method: "DELETE",
-      headers: {
-        'Content-Type':'application/json',
-      },
     })
       .then((response) => response.json())
       .catch((err) => console.log(err));
@@ -83,9 +80,9 @@ export function App() {
                   >
                     Watched
                   </button>
-                  {/* <button style={{ marginLeft: "10%" }} onClick={handleDelete}>
+                  <button style={{ marginLeft: "10%" }} onClick={handleDelete}>
                     Delete
-                  </button> */}
+                  </button>
                 </li>
               ))}
             </ul>

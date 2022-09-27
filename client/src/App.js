@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useNavigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Routes, Route } from "react-router-dom";
 import { Results } from './components/Results';
@@ -13,6 +14,8 @@ export function App() {
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
   //const [watched, setWatched] = useState(false)
+
+  const navigate = useNavigate();
 
   //console.log("watch state", watched);
   // const movies = [
@@ -38,18 +41,19 @@ export function App() {
     })
       .then(alert("Movie deleted"))
       .then((response) => response.json())
+      .then(navigate("/"))
       .catch((err) => console.log(err));
   };
 
   const handleWatched = (id) => {
     fetch(`http://localhost:8080/watched/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
         watched: !id.watched,
       }),
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
     })
       .then(alert("Movie changed to watched"))
       .then((response) => response.json())
@@ -91,7 +95,7 @@ export function App() {
           }
         ></Route>
         <Route path="/results" element={<Results />}></Route>
-        <Route path="/added" element={<AddedMovies />}></Route>
+        <Route path="/favorites" element={<AddedMovies />}></Route>
         <Route path="/watched" element={<Watched />}></Route>
         <Route path="/towatch" element={<ToWatch />}></Route>
       </Routes>

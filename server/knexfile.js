@@ -6,7 +6,9 @@
 module.exports = {
   development: {
     client: "pg",
+    //uncomment if using on personal workspace
     connection: 'postgres://postgres:docker@localhost/movie_list'
+    //uncomment if deploying in docker using docker compose
     //connection: process.env.DB_CONNECTION_STRING,
   },
 
